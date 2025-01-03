@@ -245,3 +245,151 @@ span {
   }
 }
 ```
+
+  <br/>
+
+## ch11. 함수
+
+- @를 사용하여 함수를 선언할 수 있다.
+
+```scss
+@function ratio($size, $ratio){
+  return $size * $ratio
+}
+
+.box {
+  $width: 100px;
+  width: $width; // 100px
+  height: ratio($width, 1/2) // 50px
+}
+```
+
+  <br/>
+
+## ch12. 색상 내장 함수
+
+- mix(blue,red) 첫번째 인수와 두번쨰 인수의 color를 섞는 함수
+- lighten(blue,10%) color를 두번쨰 인수만큼 밝게 만든다.
+- darken(blue,10%) color를 두번쨰 인수만큼 어둡게 만든다.
+- saturate(blue,50%) color의 채도를 두번쨰 인수만큼 올린다.
+- desaturate(blue,50%) color의 채도를 두번쨰 인수만큼 내린다.
+- grayscale(blue) color를 회색으로 만들어준다.
+- invert(blue) color를 반전시킨다.
+- rgba(blue,.5) color에 .5만큼 투명도를 더한다.
+-
+
+```scss
+.box {
+  $color: blue;
+  width: 200px;
+  height: 200px;
+  margin: 20px;
+  border-radius: 10px;
+  background-color: $color;
+  &:hover {
+    // mix(기준색상,섞을색상)
+    background-color: mix($color, red);
+    // lighten(기준색상,밝기올릴정도)
+    background-color: lighten($color, 10%);
+    // darken(기준색상,밝기내릴정도)
+    background-color: darken($color, 10%);
+    // saturate(기준색상,채도올릴정도)
+    background-color: saturate($color, 50%);
+    // saturate(기준색상,채도내릴정도)
+    background-color: desaturate($color, 50%);
+    // grayscale(기준색상)
+    background-color: grayscale($color);
+    // invert(기준색상)
+    background-color: invert($color);
+    // rgba(기준색상,투명도)
+    background-color: rgba($color, 0.5);
+  }
+}
+```
+
+  <br/>
+
+## ch13. 가져오기
+
+- `import '파일경로'`를 통해 다른 scss파일을 import 할 수 있다.
+  ```scss
+  // main.scss
+  @import "./sub.scss", "./sub2.scss";
+  ```
+  <br/>
+
+## ch14. Overwatch 캐릭터 선택 예제 리팩토링
+
+<br/>
+
+## ch15. 데이터 종류
+
+- $ string
+  - `relative`, `"../images/logo.png"`
+- $ number
+  - `.5`, `100px`, `1em`
+- $ color
+  - `red`, `#FFFF00`, `rgba(0,0,0,.1)`
+- $ boolean
+  - `true`, `false`,
+- $ null
+  - `null`
+- $ list
+  - scss에서 취급하는 기본 데이터들을 쉼표로 구분해서 나열 해놓은것.
+  - `$list: orange, royalblue, yellow`
+- $map
+  - 객체와 유사함, key와 value가 들어감
+  - `$map: ( o: orange, r: royalblue, y: yellow )`
+    <br/>
+
+## ch16. 반복문 @each
+
+- js의 forEach와 같은 기능 ($list, $map을 순회)
+
+  ```scss
+  $list: orange, royalblue, yellow;
+  $map: (
+    o: orange,
+    r: royalblue,
+    y: yellow,
+  );
+
+  // $list의 활용
+  @each $color in $list {
+    .box {
+      background-color: $color;
+    }
+  }
+
+  // $map의 활용
+  @each $k, $v in $map {
+    .box-#{k} {
+      background-color: $v;
+    }
+  }
+  ```
+
+    <br/>
+
+## ch17. 재활용 @content
+
+- `@mixin` 내부에 `@content`을 사용하여 추가적인 내용을 기입 가능
+
+  ```scss
+  @mixin left-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    @content;
+  }
+
+  .container {
+    width: 100px;
+    height: 100px;
+    @include left-top {
+      bottom: 0;
+      right: 0;
+      margin: auto;
+    }
+  }
+  ```
